@@ -1,0 +1,30 @@
+# Node.js dependencies
+node_modules/
+
+# Log files
+*.log
+
+# Environment variables
+.env
+
+# Temporary or swap files
+*.tmp
+*.swp
+
+# Build directories (if applicable)
+dist/
+build/
+
+# IDE and editor configurations
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Dependency lock files (optional)
+# package-lock.json
+# yarn.lock
+
+# Test coverage directories
+coverage/
