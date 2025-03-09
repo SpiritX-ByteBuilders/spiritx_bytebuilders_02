@@ -2,9 +2,18 @@ import os
 from fastapi import FastAPI
 from pymongo import MongoClient
 import google.generativeai as genai
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # MongoDB Connection
 client = MongoClient("mongodb://localhost:27017")
@@ -39,11 +48,11 @@ async def chatbot(query: dict):
         if player:
             # Formatted response without revealing points
             reply = (
-                f"Player: {player['Name']}\n"  # Update field name to match MongoDB documents
-                f"Team: {player['Team']}\n"  # Update field name to match MongoDB documents
-                f"Matches: {player['Matches']}\n"  # Update field name to match MongoDB documents
-                f"Runs: {player['Runs']}\n"  # Update field name to match MongoDB documents
-                f"Wickets: {player['Wickets']}\n"  # Update field name to match MongoDB documents
+                f"Player: {player['Name']}\n"  
+                f"Team: {player['Team']}\n"  
+                f"Matches: {player['Matches']}\n"  
+                f"Runs: {player['Runs']}\n" 
+                f"Wickets: {player['Wickets']}\n"  
                 "Note: Player points are confidential and cannot be revealed."
             )
         else:
@@ -56,8 +65,7 @@ async def chatbot(query: dict):
         )
 
     else:
-        # Use Gemini AI for general queries
-        model = genai.GenerativeModel("gemini-pro")
+        model = genai.GenerativeModel("gemini-1.5-flash")
         gemini_response = model.generate_content(user_query)
         reply = gemini_response.text if gemini_response else "I don’t have enough knowledge to answer that question."
 
