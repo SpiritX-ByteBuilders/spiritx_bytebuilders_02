@@ -40,13 +40,14 @@ const App = () => {
       <Route path="/register" element={<Register onRegister={setUser} />} />
       <Route
         path="/players"
-        element={user ? <Players onLogout={setUser} /> : <Navigate to="/" />}
+        element={
+          user || admin ? <Players onLogout={setUser} /> : <Navigate to="/" />
+        }
       />
       <Route
         path="/players/:id"
-        element={user ? <PlayerProfile /> : <Navigate to="/" />}
+        element={user || admin ? <PlayerProfile /> : <Navigate to="/" />}
       />
-      <Route path="/tournament-summary" element={<TournamentSummary />} />
 
       {/* Admin Routes */}
       <Route path="/admin-login" element={<AdminLogin onLogin={setAdmin} />} />
@@ -54,6 +55,10 @@ const App = () => {
       <Route
         path="/admin-dashboard"
         element={admin ? <AdminDashboard /> : <Navigate to="/admin-login" />}
+      />
+      <Route
+        path="/tournament-summary"
+        element={admin ? <TournamentSummary /> : <Navigate to="/admin-login" />}
       />
     </Routes>
   );
