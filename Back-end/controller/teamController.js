@@ -6,7 +6,7 @@ const Player = require("../models/Cricketer");
 const getPlayersByCategory = async (req, res) => {
   try {
     const { category } = req.params;
-    const players = await Player.find({ Category: category }); // Fix: Use "Category" instead of "playerType"
+    const players = await Player.find({ Category: category }); // Ensure the field name matches your database schema
     res.json(players);
   } catch (error) {
     res.status(500).json({ error: "Server error" });

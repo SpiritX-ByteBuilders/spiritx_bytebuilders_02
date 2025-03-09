@@ -4,13 +4,13 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Players from "./pages/Players";
 import PlayerProfile from "./pages/PlayerProfile";
-import ChatBot from "./pages/chatbot";
-
+import ChatBot from "./pages/ChatBot";
 import TournamentSummary from "./pages/TournamentSummary";
 import AdminLogin from "./pages/AdminLogin";
 import AdminRegister from "./pages/AdminRegister";
 import AdminDashboard from "./pages/AdminDashboard";
-
+import SelectTeam from "./pages/SelectTeam"; // Import the SelectTeam component
+import PlayerSelection from "./pages/PlayerSelection"; // Import the PlayerSelection component
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -31,14 +31,6 @@ const App = () => {
     }
   }, []);
 
-  // ✅ Load user from localStorage on app start
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser)); // ✅ Set user from local storage
-    }
-  }, []);
-
   return (
     <Routes>
       {/* User Routes */}
@@ -49,8 +41,6 @@ const App = () => {
         }
       />
       <Route path="/register" element={<Register onRegister={setUser} />} />
-
-
       <Route
         path="/players"
         element={
@@ -61,7 +51,13 @@ const App = () => {
         path="/players/:id"
         element={user || admin ? <PlayerProfile /> : <Navigate to="/" />}
       />
-
+      <Route path="/select-team" element={<SelectTeam />} />{" "}
+      {/* Add the SelectTeam route */}
+      <Route
+        path="/select-team/:category"
+        element={<PlayerSelection user={user} />}
+      />{" "}
+      {/* Add the PlayerSelection route */}
       {/* Admin Routes */}
       <Route path="/admin-login" element={<AdminLogin onLogin={setAdmin} />} />
       <Route path="/admin-register" element={<AdminRegister />} />
@@ -73,9 +69,10 @@ const App = () => {
         path="/tournament-summary"
         element={admin ? <TournamentSummary /> : <Navigate to="/admin-login" />}
       />
-              <Route path="/chatbot" element={user ? <ChatBot /> : <Navigate to="/" />} />
-
-
+      <Route
+        path="/chatbot"
+        element={user ? <ChatBot /> : <Navigate to="/" />}
+      />
     </Routes>
   );
 };
