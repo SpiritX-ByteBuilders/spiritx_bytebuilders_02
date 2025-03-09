@@ -15,7 +15,7 @@ const App = () => {
       <Route path="/register" element={<Register onRegister={setUser} />} />
       <Route path="/players" element={user ? <Players /> : <Navigate to="/" />} />
       <Route path="/players/:id" element={user ? <PlayerProfile /> : <Navigate to="/" />} />
-      <Route path="/chatbot" element={<ChatBot />} />
+      <Route path="/chatbot" element={user ? <ChatBot /> : <Navigate to="/" />} />
     </Routes>
   );
 };

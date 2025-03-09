@@ -32,7 +32,6 @@ async def chatbot(query: dict):
     user_query = query["query"].lower()
 
     if "best cricket team" in user_query:
-        # Get the best 11 players based on highest possible stats (runs and wickets)
         best_team = list(cricketers_collection.find().sort([("runs", -1), ("wickets", -1)]).limit(11))
 
         team_names = [player["Name"] for player in best_team]  # Update field name to match MongoDB documents
@@ -46,7 +45,6 @@ async def chatbot(query: dict):
         player = cricketers_collection.find_one({"Name": {"$regex": player_name, "$options": "i"}})  # Update field name to match MongoDB documents
 
         if player:
-            # Formatted response without revealing points
             reply = (
                 f"Player: {player['Name']}\n"  
                 f"Team: {player['Team']}\n"  
