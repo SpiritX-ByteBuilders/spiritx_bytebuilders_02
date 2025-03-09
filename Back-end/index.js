@@ -10,7 +10,6 @@ const tournamentRoute = require("./routes/summaryRoute");
 const userRoute = require("./routes/userRoute");
 const adminRoute = require("./routes/adminRoute"); // Import admin route
 
-
 dotenv.config();
 
 // Initialize the app
@@ -34,7 +33,6 @@ app.use("/api/players", playerRoute);
 app.use("/api/users", userRoute);
 app.use("/api/tournament-summary", tournamentRoute);
 app.use("/api/admin", adminRoute); // Use admin route
-h
 
 // Start the server
 const port = process.env.PORT || 5000;
