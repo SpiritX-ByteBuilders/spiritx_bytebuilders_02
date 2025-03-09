@@ -26,6 +26,11 @@ const Players = () => {
   if (loading) return <CircularProgress sx={{ display: "block", mx: "auto", mt: 4 }} />;
 
   return (
+    <>
+   <div>
+      <h1>Players List</h1>
+      <button onClick={() => navigate("/select-team")}>Select Your Team</button>
+    </div>
     <Container>
       <Typography variant="h4" gutterBottom>Available Players</Typography>
       <Grid container spacing={3}>
@@ -42,6 +47,8 @@ const Players = () => {
         ))}
       </Grid>
     </Container>
+    </>
+   
   );
 };
 
