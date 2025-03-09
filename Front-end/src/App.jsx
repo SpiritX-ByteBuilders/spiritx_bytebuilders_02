@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Players from "./pages/Players";
 import PlayerProfile from "./pages/PlayerProfile";
+import ChatBot from "./pages/chatbot";
 
 import TournamentSummary from "./pages/TournamentSummary";
 import AdminLogin from "./pages/AdminLogin";
@@ -49,6 +50,7 @@ const App = () => {
       />
       <Route path="/register" element={<Register onRegister={setUser} />} />
 
+
       <Route
         path="/players"
         element={
@@ -71,6 +73,8 @@ const App = () => {
         path="/tournament-summary"
         element={admin ? <TournamentSummary /> : <Navigate to="/admin-login" />}
       />
+              <Route path="/chatbot" element={user ? <ChatBot /> : <Navigate to="/" />} />
+
 
     </Routes>
   );

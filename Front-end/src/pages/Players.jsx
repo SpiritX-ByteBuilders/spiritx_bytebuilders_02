@@ -1,13 +1,8 @@
 import { useEffect, useState } from "react";
-import {
-  Container,
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  CircularProgress,
-  Button,
-} from "@mui/material";
+
+import { Container, Grid, Card, CardContent, Typography, CircularProgress, Button, Box } from "@mui/material";
+
+
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -47,26 +42,19 @@ const Players = ({ onLogout }) => {
       <button onClick={() => navigate("/select-team")}>Select Your Team</button>
     </div>
     <Container>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "20px",
-        }}
-      >
-        <Typography variant="h4" gutterBottom>
-          Available Players
-        </Typography>
-        <Button
-          variant="contained"
-          color="secondary"
-          size="small"
-          onClick={handleLogout}
-        >
-          Logout
-        </Button>
-      </div>
+
+<Typography variant="h4" gutterBottom>Available Players</Typography>
+
+<Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+  <Button variant="contained" color="primary" onClick={() => navigate("/chatbot")}>
+    Chat with Spiriter
+  </Button>
+  
+  <Button variant="contained" color="secondary" size="small" onClick={handleLogout}>
+    Logout
+  </Button>
+</Box>
+
       <Grid container spacing={3}>
         {players.map((player) => (
           <Grid item xs={12} sm={6} md={4} key={player._id}>
