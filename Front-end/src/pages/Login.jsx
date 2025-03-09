@@ -1,78 +1,38 @@
 import { useState } from "react";
-import { TextField, Button, Card, Typography, Container } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/users/login", // Update with your API URL
-        { email, password },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post("http://localhost:5000/api/auth/login", {
+        email,
+        password,
+      });
 
-      localStorage.setItem("token", response.data.token); // Save token
-      onLogin(response.data.token); // Update state
-      navigate("/players"); // Redirect to players page
-    } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      const loggedInUser = response.data.user;
+
+      // ✅ Save user in local storage
+      localStorage.setItem("user", JSON.stringify(loggedInUser));
+      onLogin(loggedInUser); // ✅ Update global state
+
+      navigate("/players"); // ✅ Redirect after login
+    } catch (error) {
+      alert("Invalid credentials. Please try again.");
     }
   };
 
   return (
-    <Container maxWidth="xs">
-      <Card sx={{ padding: 4, mt: 8, textAlign: "center" }}>
-        <Typography variant="h5" gutterBottom>
-          Login
-        </Typography>
-        <TextField
-          label="Email"
-          fullWidth
-          margin="normal"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          fullWidth
-          margin="normal"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {error && <Typography color="error">{error}</Typography>}
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={handleLogin}
-          sx={{ mt: 2 }}
-        >
-          Sign In
-        </Button>
-        <Typography variant="body2" sx={{ mt: 2 }}>
-          Don't have an account?
-        </Typography>
-        <Button
-          variant="outlined"
-          color="secondary"
-          fullWidth
-          onClick={() => navigate("/register")}
-          sx={{ mt: 1 }}
-        >
-          Register
-        </Button>
-      </Card>
-    </Container>
+    <form onSubmit={handleLogin}>
+      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      <button type="submit">Login</button>
+    </form>
   );
 };
 
