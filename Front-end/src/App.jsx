@@ -4,10 +4,12 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Players from "./pages/Players";
 import PlayerProfile from "./pages/PlayerProfile";
+
 import TournamentSummary from "./pages/TournamentSummary";
 import AdminLogin from "./pages/AdminLogin";
 import AdminRegister from "./pages/AdminRegister";
 import AdminDashboard from "./pages/AdminDashboard";
+
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -28,6 +30,14 @@ const App = () => {
     }
   }, []);
 
+  // ✅ Load user from localStorage on app start
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // ✅ Set user from local storage
+    }
+  }, []);
+
   return (
     <Routes>
       {/* User Routes */}
@@ -38,6 +48,7 @@ const App = () => {
         }
       />
       <Route path="/register" element={<Register onRegister={setUser} />} />
+
       <Route
         path="/players"
         element={
@@ -60,6 +71,7 @@ const App = () => {
         path="/tournament-summary"
         element={admin ? <TournamentSummary /> : <Navigate to="/admin-login" />}
       />
+
     </Routes>
   );
 };

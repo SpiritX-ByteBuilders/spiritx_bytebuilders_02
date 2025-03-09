@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { TextField, Button, Card, Typography, Container } from "@mui/material";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
+
       const response = await axios.post(
         "http://localhost:5000/api/users/login", // Update with your API URL
         { email, password },
@@ -24,6 +24,7 @@ const Login = ({ onLogin }) => {
       navigate("/players"); // Redirect to players page
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
+
     }
   };
 
@@ -66,6 +67,7 @@ const Login = ({ onLogin }) => {
         </Typography>
       </Card>
     </Container>
+
   );
 };
 

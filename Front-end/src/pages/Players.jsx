@@ -41,6 +41,11 @@ const Players = ({ onLogout }) => {
     return <CircularProgress sx={{ display: "block", mx: "auto", mt: 4 }} />;
 
   return (
+    <>
+   <div>
+      <h1>Players List</h1>
+      <button onClick={() => navigate("/select-team")}>Select Your Team</button>
+    </div>
     <Container>
       <div
         style={{
@@ -83,6 +88,8 @@ const Players = ({ onLogout }) => {
         ))}
       </Grid>
     </Container>
+    </>
+   
   );
 };
 
