@@ -5,8 +5,9 @@ const connectDB = require("./config/db");
 
 // Import routes
 const playerRoute = require("./routes/playerRoute");
-const tournamentRoute = require("./routes/summaryRoute"); // Ensure this is correctly imported
-const users = require("./routes/userRoute");
+const tournamentRoute = require("./routes/summaryRoute");
+const userRoute = require("./routes/userRoute");
+const adminRoute = require("./routes/adminRoute"); // Import admin route
 
 dotenv.config();
 
@@ -27,8 +28,9 @@ connectDB();
 
 // Set up routes
 app.use("/api/players", playerRoute);
-app.use("/api/users", users);
-app.use("/api/tournament-summary", tournamentRoute); // Ensure this is correctly mounted
+app.use("/api/users", userRoute);
+app.use("/api/tournament-summary", tournamentRoute);
+app.use("/api/admin", adminRoute); // Use admin route
 
 // Start the server
 const port = process.env.PORT || 5000;

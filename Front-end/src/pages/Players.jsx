@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
-import { Container, Grid, Card, CardContent, Typography, CircularProgress } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  CircularProgress,
+  Button,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Players = () => {
+const Players = ({ onLogout }) => {
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -23,19 +31,52 @@ const Players = () => {
     fetchPlayers();
   }, []);
 
-  if (loading) return <CircularProgress sx={{ display: "block", mx: "auto", mt: 4 }} />;
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    onLogout(null);
+    navigate("/");
+  };
+
+  if (loading)
+    return <CircularProgress sx={{ display: "block", mx: "auto", mt: 4 }} />;
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>Available Players</Typography>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        <Typography variant="h4" gutterBottom>
+          Available Players
+        </Typography>
+        <Button
+          variant="contained"
+          color="secondary"
+          size="small"
+          onClick={handleLogout}
+        >
+          Logout
+        </Button>
+      </div>
       <Grid container spacing={3}>
         {players.map((player) => (
           <Grid item xs={12} sm={6} md={4} key={player._id}>
-            <Card onClick={() => navigate(`/players/${player._id}`)} sx={{ cursor: "pointer" }}>
+            <Card
+              onClick={() => navigate(`/players/${player._id}`)}
+              sx={{ cursor: "pointer" }}
+            >
               <CardContent>
                 <Typography variant="h6">{player.Name}</Typography>
-                <Typography variant="body2" color="textSecondary">{player.University}</Typography>
-                <Typography variant="body2">Category: {player.Category}</Typography>
+                <Typography variant="body2" color="textSecondary">
+                  {player.University}
+                </Typography>
+                <Typography variant="body2">
+                  Category: {player.Category}
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
