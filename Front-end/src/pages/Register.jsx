@@ -3,17 +3,18 @@ import { TextField, Button, Card, Typography, Container } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ onLogin }) => {
+const Register = ({ onRegister }) => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/login", // Update with your API URL
-        { email, password },
+        "http://localhost:5000/api/users/register", 
+        { name, email, password },
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
@@ -21,10 +22,10 @@ const Login = ({ onLogin }) => {
       );
 
       localStorage.setItem("token", response.data.token); // Save token
-      onLogin(response.data.token); // Update state
+      onRegister(response.data.token); // Update state
       navigate("/players"); // Redirect to players page
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.response?.data?.message || "Registration failed");
     }
   };
 
@@ -32,8 +33,15 @@ const Login = ({ onLogin }) => {
     <Container maxWidth="xs">
       <Card sx={{ padding: 4, mt: 8, textAlign: "center" }}>
         <Typography variant="h5" gutterBottom>
-          Login
+          Register
         </Typography>
+        <TextField
+          label="Name"
+          fullWidth
+          margin="normal"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
         <TextField
           label="Email"
           fullWidth
@@ -54,26 +62,26 @@ const Login = ({ onLogin }) => {
           variant="contained"
           color="primary"
           fullWidth
-          onClick={handleLogin}
+          onClick={handleRegister}
           sx={{ mt: 2 }}
         >
-          Sign In
+          Register
         </Button>
         <Typography variant="body2" sx={{ mt: 2 }}>
-          Don't have an account?
+            have an account?
         </Typography>
         <Button
           variant="outlined"
           color="secondary"
           fullWidth
-          onClick={() => navigate("/register")}
+          onClick={() => navigate("/")}
           sx={{ mt: 1 }}
         >
-          Register
+          Log In
         </Button>
       </Card>
     </Container>
   );
 };
 
-export default Login;
+export default Register;
