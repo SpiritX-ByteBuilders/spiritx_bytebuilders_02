@@ -5,8 +5,11 @@ const connectDB = require("./config/db");
 
 // Import routes
 const playerRoute = require("./routes/playerRoute");
-const tournamentRoute = require("./routes/tournamentRoute");
-const users = require("./routes/userRoute");
+
+const tournamentRoute = require("./routes/summaryRoute");
+const userRoute = require("./routes/userRoute");
+const adminRoute = require("./routes/adminRoute"); // Import admin route
+
 
 dotenv.config();
 
@@ -15,10 +18,10 @@ const app = express();
 
 // Middleware
 app.use(
-    cors({
-        origin: "http://localhost:5173", // Replace with your frontend URL
-        credentials: true,
-    })
+  cors({
+    origin: "http://localhost:5173", // Replace with your frontend URL
+    credentials: true,
+  })
 );
 app.use(express.json()); // to parse JSON bodies
 
@@ -27,11 +30,14 @@ connectDB();
 
 // Set up routes
 app.use("/api/players", playerRoute);
-app.use("/api/users", users);
-// app.use("/api/tournament-summary", tournamentRoute);
+
+app.use("/api/users", userRoute);
+app.use("/api/tournament-summary", tournamentRoute);
+app.use("/api/admin", adminRoute); // Use admin route
+h
 
 // Start the server
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });

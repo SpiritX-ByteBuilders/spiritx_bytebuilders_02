@@ -1,30 +1,32 @@
 import { useState } from "react";
+import { TextField, Button, Card, Typography, Container } from "@mui/material";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
-const Login = ({ onLogin }) => {
-  const [email, setEmail] = useState("");
+const AdminLogin = ({ onLogin }) => {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
-
       const response = await axios.post(
-        "http://localhost:5000/api/users/login", // Update with your API URL
-        { email, password },
+        "http://localhost:5000/api/admin/login",
         {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
+          username,
+          password,
         }
       );
-      localStorage.setItem("token", response.data.token); // Save token
-      onLogin(response.data.token); // Update state
-      navigate("/players"); // Redirect to players page
-    } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
-
+      localStorage.setItem("adminToken", response.data.token); // Store token
+      onLogin(response.data.token);
+      navigate("/admin-dashboard");
+    } catch (error) {
+      setError(
+        `Login failed: ${
+          error.response ? error.response.data.message : error.message
+        }`
+      );
     }
   };
 
@@ -32,14 +34,14 @@ const Login = ({ onLogin }) => {
     <Container maxWidth="xs">
       <Card sx={{ padding: 4, mt: 8, textAlign: "center" }}>
         <Typography variant="h5" gutterBottom>
-          Login
+          Admin Login
         </Typography>
         <TextField
-          label="Email"
+          label="Username"
           fullWidth
           margin="normal"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <TextField
           label="Password"
@@ -54,21 +56,20 @@ const Login = ({ onLogin }) => {
           variant="contained"
           color="primary"
           fullWidth
-          onClick={handleLogin}
+          onClick={handleSubmit}
           sx={{ mt: 2 }}
         >
           Sign In
         </Button>
         <Typography variant="body2" sx={{ mt: 2 }}>
-          Don't have an account? <Link to="/register">Register here</Link>
+          Don't have an account? <Link to="/admin-register">Register here</Link>
         </Typography>
         <Typography variant="body2" sx={{ mt: 2 }}>
-          Admin? <Link to="/admin-login">Login here</Link>
+          User? <Link to="/">Login here</Link>
         </Typography>
       </Card>
     </Container>
-
   );
 };
 
-export default Login;
+export default AdminLogin;
